@@ -25,23 +25,24 @@ public class MainActivity extends AppCompatActivity {
         timeTextView = findViewById(R.id.timeTextView);
         timeSeekBar = findViewById(R.id.timeSeekBar);
 
-        int defaultTime = 10;
-        int max = 30;
+        int defaultTime = 30;
+        int max = 600;
 
-        timeSeekBar.setProgress(defaultTime);
         timeSeekBar.setMax(max);
+        timeSeekBar.setProgress(defaultTime);
         timeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int min = 1;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(progress < min){
-                    seekBar.setProgress(min);
-                    time = seekBar.getProgress();
-                }else{
-                    time = seekBar.getProgress();
+                int minutes = progress/60;
+                int seconds = progress - (minutes*60);
+
+                String secondString = Integer.toString(seconds);
+
+                if(secondString.equals("0")){
+                    secondString = "00";
                 }
-                time = time*60000;
-                timeTextView.setText(new SimpleDateFormat("mm:ss").format(new Date( time)));
+
+                timeTextView.setText(Integer.toString(minutes) + ":" + secondString);
             }
 
             @Override
